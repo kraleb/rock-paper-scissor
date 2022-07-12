@@ -64,10 +64,12 @@ h1{
   font-size: 36px;
 }
 
-.bookend{
+.bookend-container{
+  flex-direction: row;
   left: 0px;
-  right: 0px;;
+  right: 0px;
   width: 100%;
+  background-color: crimson;
 }
 
 .footer{
