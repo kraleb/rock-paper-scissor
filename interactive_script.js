@@ -6,27 +6,24 @@ const resultBox = document.querySelector("#result_box");
 const gameBox = document.querySelector("#game_box");
 const winBox = document.querySelector("#win");
 const loseBox = document.querySelector("#lose");
-const options = ["Rock", "Paper", "Scissor"];
+const computerOptions = ["Rock", "Paper", "Scissor"];
+const randomChars = Array.from(Array(15).keys()).map((entry) => {
+  return entry + 33;
+});
 
 let tracker = { win: 0, tie: 0, lose: 0 };
 
 // LISTENERS
-rockButton.addEventListener("click", (e) => {
-  play(e.target.value);
-});
-
-paperButton.addEventListener("click", (e) => {
-  play(e.target.value);
-});
-
-scissorButton.addEventListener("click", (e) => {
-  play(e.target.value);
-});
+[rockButton, paperButton, scissorButton].forEach((btn) =>
+  btn.addEventListener("click", (e) => {
+    play(e.target.value);
+  })
+);
 
 // LOGIC
 function computerPlay() {
-  let randomSelection = Math.floor(Math.random() * options.length);
-  let currentOption = options[randomSelection];
+  let currentOption =
+    computerOptions[Math.floor(Math.random() * computerOptions.length)];
   return currentOption;
 }
 
