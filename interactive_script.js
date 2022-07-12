@@ -3,7 +3,12 @@ const rockButton = document.querySelector("#rock_button");
 const paperButton = document.querySelector("#paper_button");
 const scissorButton = document.querySelector("#scissor_button");
 const resultBox = document.querySelector("#result_box");
+const gameBox = document.querySelector("#game_box");
+const winBox = document.querySelector("#win");
+const loseBox = document.querySelector("#lose");
 const options = ["Rock", "Paper", "Scissor"];
+
+let tracker = { win: 0, tie: 0, lose: 0 };
 
 // LISTENERS
 rockButton.addEventListener("click", (e) => {
@@ -25,65 +30,42 @@ function computerPlay() {
   return currentOption;
 }
 
-function play(
-  playerSelection = window.prompt(),
-  computerSelection = computerPlay()
-) {
-  let response;
-  let status = null;
-  if (!playerSelection) {
-    return "Nothing";
-  }
+function play(playerSelection, computerSelection = computerPlay()) {
+  let response = "You tied!";
+  let status = "tie";
   let playerSelectionLow = playerSelection.toLowerCase();
+
   playerSelection = capitalize(playerSelection);
-
-  if (playerSelectionLow == computerSelection.toLowerCase()) {
-    status = 0;
-  } else if (playerSelectionLow == "rock") {
-    if (computerSelection == "Scissor") {
-      status = 1;
+  if (playerSelectionLow != computerSelection.toLowerCase()) {
+    if (playerSelectionLow == "rock") {
+      status = computerSelection == "Scissor" ? "win" : "lose";
+    } else if (playerSelectionLow == "paper") {
+      status = computerSelection == "Rock" ? "win" : "lose";
+    } else if (playerSelectionLow == "scissor") {
+      status = computerSelection == "Paper" ? "win" : "lose";
     }
-    if (computerSelection == "Paper") {
-      status = -1;
-    }
-    status = computerSelection == "Scissor" ? 1 : -1;
-  } else if (playerSelectionLow == "paper") {
-    if (computerSelection == "Rock") {
-      status = 1;
-    }
-    if (computerSelection == "Scissor") {
-      status = -1;
-    }
-  } else if (playerSelectionLow == "scissor") {
-    if (computerSelection == "Paper") {
-      status = 1;
-    }
-    if (computerSelection == "Rock") {
-      status = -1;
-    }
+    response = `You ${status}! ${playerSelection} beats ${computerSelection}`;
   }
 
-  switch (status) {
-    case 1:
-      response = `You Win! ${playerSelection} beats ${computerSelection}`;
-      break;
-    case -1:
-      response = `You Lose! ${playerSelection} loses to ${computerSelection}`;
-      break;
-    case 0:
-      response = `You Tie! you both chose ${playerSelection}, try again`;
-      break;
-    default:
-      response = `Enter a supported value! Select from ${options.join(", ")}`;
-  }
-  console.log(response);
-
-  updateResult(response);
+  updateResult(response, status);
   return status;
 }
 
-function updateResult(response) {
+function updateResult(response, status) {
+  tracker[status]++;
   resultBox.textContent = response;
+  winBox.textContent = tracker["win"];
+  loseBox.textContent = tracker["lose"];
+
+  if (["win", "lose"].includes(status) && tracker[status] == 5) {
+    gameBox.textContent = "GAME OVER";
+    document
+      .querySelector(`#${status}`)
+      .setAttribute("style", "border: 1px solid crimson;");
+    tracker = { win: 0, tie: 0, lose: 0 };
+  } else if (gameBox.textContent) {
+    gameBox.innerHTML = null;
+  }
 }
 
 /**
@@ -127,8 +109,8 @@ function handleGameResponse(outcomeTotal, tracker) {
 
 // SUPPORT
 
-function capitalize(string) {
-  let firstCap = string.charAt(0).toUpperCase();
-  let rest = string.slice(1, string.length).toLowerCase();
+function capitalize(stringIn) {
+  let firstCap = stringIn.charAt(0).toUpperCase();
+  let rest = stringIn.slice(1, stringIn.length).toLowerCase();
   return firstCap + rest;
 }
