@@ -53,58 +53,44 @@ function updateResult(response, status) {
   resultBox.textContent = response;
   winBox.textContent = tracker["win"];
   loseBox.textContent = tracker["lose"];
+  if (handleGameEnd(tracker, status)) {
+    tracker = { win: 0, tie: 0, lose: 0 };
+  }
+}
 
+// SUPPORT
+
+function handleGameEnd(tracker, status) {
   if (["win", "lose"].includes(status) && tracker[status] == 5) {
     gameBox.textContent = "GAME OVER";
     document
       .querySelector(`#${status}`)
-      .setAttribute("style", "border: 1px solid crimson;");
-    tracker = { win: 0, tie: 0, lose: 0 };
+      .setAttribute("style", "border: 1px solid crimson; color: crimson;");
+    return 1;
   } else if (gameBox.textContent) {
     gameBox.innerHTML = null;
-  }
-}
-
-/**
-function game(matches = 5) {
-  let tracker = { wins: 0, ties: 0, loses: 0 };
-  let outcomeTrack = 0;
-  let outcome;
-
-  for (let i = 1; i <= matches; i++) {
-    outcome = play();
-    outcomeTrack += outcome;
-    if (outcome == 1) {
-      tracker.wins += 1;
-    } else if (outcome == -1) {
-      tracker.loses += 1;
-    } else if (outcome == 0) {
-      tracker.ties += 1;
-    } else if (outcome == "Nothing") {
-      console.log("Nothing entered, skipping this match");
-    } else {
-      // if we don't get a valid value, do not increase the match count
-      i--;
-    }
-  }
-
-  return handleGameResponse(outcomeTrack, tracker);
-}
-
-function handleGameResponse(outcomeTotal, tracker) {
-  if (outcomeTotal > 0) {
-    response = "You WON the game!";
-  } else if (outcomeTotal < 0) {
-    response = "You LOST the game!";
+    document.querySelectorAll(".counter").forEach((counter) => {
+      counter.style = "";
+    });
+    document.querySelectorAll(".bookend-container").forEach((container) =>
+      Array.from(container.childNodes)
+        .filter((node) => node.nodeName == "#text")
+        .forEach((textNode) => textNode.remove())
+    );
   } else {
-    response = "You TIED the game!";
+    generateRandomCharInBookend();
   }
-  response += ` Wins: ${tracker.wins}, Ties: ${tracker.ties}, Loses: ${tracker.loses}`;
-  return response;
+  return 0;
 }
-*/
 
-// SUPPORT
+function generateRandomCharInBookend() {
+  let charRand = randomChars[Math.floor(randomChars.length * Math.random())];
+  let char = ` ${String.fromCharCode(charRand)} `;
+  document.querySelectorAll(".bookend-item").forEach((el) => {
+    el.insertAdjacentText("beforebegin", char);
+    el.insertAdjacentText("afterend", char);
+  });
+}
 
 function capitalize(stringIn) {
   let firstCap = stringIn.charAt(0).toUpperCase();
