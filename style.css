@@ -4,6 +4,11 @@ html, body {
   width: 100%;
 }
 
+h1{
+  margin: 0px;
+  margin-top: 10px;
+}
+
 .layout {
   display: flex;
   flex-direction: column;
@@ -20,8 +25,9 @@ html, body {
 }
 
 .button-container {
-  height: 100px;
-  gap: 50px;
+  height: 60px;
+  gap: 30px;
+  margin: 20px;
 }
 
 .button-container button{
@@ -29,10 +35,33 @@ html, body {
   border: solid 1px black;
   padding: 10px;
   width: 100px;
+  font-weight: 700;
 }
 
 .result_box{
-  margin: 20px;
+  margin: 5px;
+  margin-top: 20px;
+  height: 20px;
+}
+
+.game_box{
+  height: 20px;
+  margin-bottom: 20px;
+  font-weight: 900;
+}
+
+.counter-set{
+  gap: 20px;
+}
+
+.counter{
+  border: 1px solid white;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
 }
 
 .bookend{
@@ -48,6 +77,6 @@ html, body {
 
 button:hover{
   background-color: crimson;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: 700;
+  color: white;
+  font-weight: 800;
 }
