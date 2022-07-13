@@ -27,7 +27,7 @@ function play(
     if (computerSelection == "Paper") {
       status = -1;
     }
-    status = (computerSelection == "Scissor") ? 1 : -1
+    status = computerSelection == "Scissor" ? 1 : -1;
   } else if (playerSelectionLow == "paper") {
     if (computerSelection == "Rock") {
       status = 1;
